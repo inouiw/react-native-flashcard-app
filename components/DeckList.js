@@ -1,8 +1,12 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { Text, View, ScrollView } from 'react-native'
+import DeckHeader from './DeckHeader'
 
 export default function DeckList() {
   return (
-    <Text>DeckList</Text>
+    <View>
+      <DeckHeader deckTitle='hello wold' numberOfCards='4' />
+      <Text>DeckList</Text>
+    </View>
   )
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { Text, View, ScrollView, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import { black, white } from '../utils/colors'
 import { saveDeckTitle } from '../utils/dataAccess'
 
@@ -11,12 +11,14 @@ export default class NewDeck extends Component {
   submit = () => {
     if (this.state.text) {
       saveDeckTitle(this.state.text)
+      this.setState({text: ''})
     }
   }
 
   render() {
     return (
-      <View>
+      <ScrollView contentContainerStyle={{flexGrow: 1}}
+        keyboardShouldPersistTaps='handled'>
         <Text style={styles.questionLabel}>What is the title of your new deck?</Text>
         <KeyboardAvoidingView behavior="padding" enabled>
           <TextInput
@@ -29,7 +31,7 @@ export default class NewDeck extends Component {
         <TouchableOpacity onPress={this.submit}>
           <Text style={styles.button}>Submit</Text>
         </TouchableOpacity>
-      </View>
+        </ScrollView>
     )
   }
 }
