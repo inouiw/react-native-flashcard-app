@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, Keyboard } from 'react-native'
 import { black, white, gray } from '../utils/colors'
 import { saveDeckTitle } from '../utils/dataAccess'
 
@@ -9,14 +9,20 @@ export default class AddDeck extends Component {
   }
 
   submit = () => {
-    if (this.state.text) {
-      saveDeckTitle(this.state.text)
+    const deckTitle = this.state.text
+
+    if (deckTitle) {
+      Keyboard.dismiss()
+      saveDeckTitle(deckTitle)
         .then(() => this.props.screenProps.updateDecks())
+        .then(() => this.props.navigation.navigate('History', { deckTitle: deckTitle }))
       this.setState({text: ''})
     }
   }
 
   render() {
+    const {text} = this.state
+
     return (
       <ScrollView contentContainerStyle={{flexGrow: 1}}
         keyboardShouldPersistTaps='handled'>
@@ -25,12 +31,12 @@ export default class AddDeck extends Component {
           <TextInput
             style={styles.questionInput}
             onChangeText={(text) => this.setState({text})}
-            value={this.state.text}
+            value={text}
             maxLength={30}
           />
         </KeyboardAvoidingView>
         <TouchableOpacity onPress={this.submit}>
-          <Text style={styles.button}>Submit</Text>
+          <Text style={styles.button}>Create Deck</Text>
         </TouchableOpacity>
         </ScrollView>
     )

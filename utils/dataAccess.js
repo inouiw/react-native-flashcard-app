@@ -1,6 +1,7 @@
 import { AsyncStorage } from 'react-native'
 
 const FLASHCARD_STORAGE_KEY = 'davidneuy:flashcard'
+const NOTIFICATION_KEY = 'davidneuy:notifications'
 
 // Returns all of the decks along with their titles, questions, and answers. 
 export function getDecks() {
@@ -33,4 +34,16 @@ export function addCardToDeck(title, card) {
       obj[title].questions.push(card)
       return AsyncStorage.setItem(FLASHCARD_STORAGE_KEY, JSON.stringify(obj))
     })
+}
+
+export function removeUserNotificationPreference() {
+  return AsyncStorage.removeItem(NOTIFICATION_KEY)
+}
+
+export function getDidUserAllowNofifications() {
+  return AsyncStorage.getItem(NOTIFICATION_KEY).then(JSON.parse)
+}
+
+export function saveDidUserAllowNofifications(didUserAllow) {
+  return AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(didUserAllow))
 }

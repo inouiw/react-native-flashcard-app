@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Text, StyleSheet, View, TouchableOpacity } from 'react-native'
 import { lightGray, white, black, red } from '../utils/colors'
 import QuizResult from './QuizResult'
+import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
 
 export default class Quiz extends Component {
   static navigationOptions = {
@@ -19,11 +20,22 @@ export default class Quiz extends Component {
   }
 
   onQuestionAnswerd = (isCorrect) => {
-    this.setState((currentState) => ({
-      correctCount: currentState.correctCount + (isCorrect ? 1 : 0),
-      currentQuestionIndex: currentState.currentQuestionIndex + 1,
-      showAnswer: false,
-    }))
+    this.setState((currentState) => {
+      const newCurrentQuestionIndex = currentState.currentQuestionIndex + 1
+      const { deckTitle } = this.props.navigation.state.params
+      const isQuizComplete = (this.props.screenProps.decks[deckTitle].questions.length - newCurrentQuestionIndex) === 0
+
+      if (isQuizComplete) {
+        clearLocalNotification()
+          .then(setLocalNotification)
+      }
+      
+      return {
+        correctCount: currentState.correctCount + (isCorrect ? 1 : 0),
+        currentQuestionIndex: newCurrentQuestionIndex,
+        showAnswer: false,
+      }
+    })
   }
 
   onGoBack = () => {

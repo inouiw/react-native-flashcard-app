@@ -8,26 +8,8 @@ export default class DeckItem extends Component {
     title: 'Deck',
   }
 
-  componentDidMount() {
-    this.props.navigation.addListener('didFocus', () => console.log('deckitem focus'))
-  }
-
-  onAddCardPressed = () => {
-    this.props.navigation.navigate(
-      'AddCard',
-      { 
-        deckTitle: this.props.navigation.state.params.deckTitle,
-      }
-    )
-  }
-
-  onStartQuizPressed = () => {
-    this.props.navigation.navigate(
-      'Quiz',
-      { 
-        deckTitle: this.props.navigation.state.params.deckTitle,
-      }
-    )
+  onLinkPressed = (targetSite) => {
+    this.props.navigation.navigate(targetSite, { deckTitle: this.props.navigation.state.params.deckTitle})
   }
 
   render() {
@@ -39,18 +21,16 @@ export default class DeckItem extends Component {
       <View>
         <DeckHeader deckTitle={deckTitle} numberOfCards={numberOfCards} />
         <View style={{marginTop: 40}} />
-        <TouchableOpacity onPress={this.onAddCardPressed}>
+        <TouchableOpacity onPress={() => this.onLinkPressed('AddCard')}>
           <Text style={styles.button}>Add Card</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.onStartQuizPressed}>
+        <TouchableOpacity onPress={() => this.onLinkPressed('Quiz')}>
           <Text style={styles.button}>Start Quiz</Text>
         </TouchableOpacity>
       </View>
     )
   }
 }
-
-
 
 const styles = StyleSheet.create({
   button: {

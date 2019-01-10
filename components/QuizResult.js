@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Text, StyleSheet, View, TouchableOpacity } from 'react-native'
 import { white, black } from '../utils/colors'
 

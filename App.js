@@ -10,32 +10,9 @@ import AddCard from './components/AddCard'
 import Quiz from './components/Quiz'
 import { getDecks } from './utils/dataAccess'
 
-const StackNav = StackNavigator({
-  DeckList: {
-    screen: DeckList,
-  },
-  DeckItem: {
-    screen: DeckItem,
-  },
-  AddCard: {
-    screen: AddCard,
-  },
-  Quiz: {
-    screen: Quiz,
-  },
-},{
-  initialRouteName: 'DeckList',
-})
-
-// A StackNavigator with access to navigation prop of TabNavigator.
-function StackNavEx(props) {
-  let sp = { ...props.screenProps, tabNavigation: props.navigation }
-  return <StackNav screenProps={sp} />
-}
-
 const Tabs = TabNavigator({
   History: {
-    screen: StackNavEx,
+    screen: DeckList,
     navigationOptions: {
       tabBarLabel: 'Home',
       tabBarIcon: () => <Ionicons name='ios-home' size={30} />
@@ -65,6 +42,29 @@ const Tabs = TabNavigator({
   },
 })
 
+const StackNav = StackNavigator({
+  DeckList: {
+    screen: Tabs,
+  },
+  DeckItem: {
+    screen: DeckItem,
+  },
+  AddCard: {
+    screen: AddCard,
+  },
+  Quiz: {
+    screen: Quiz,
+  },
+},{
+  initialRouteName: 'DeckList',
+})
+
+// A StackNavigator with access to navigation prop of TabNavigator.
+// function StackNavEx(props) {
+//   let sp = { ...props.screenProps, tabNavigation: props.navigation }
+//   return <StackNav screenProps={sp} />
+// }
+
 function CustomStatusBar({ backgroundColor, ...props }) {
   return (
     <View style={{backgroundColor}}>
@@ -81,14 +81,14 @@ export default class App extends React.Component {
   }
 
   updateDecks = () => {
-    getDecks().then((decks) => this.setState(decks))
+    return getDecks().then((decks) => this.setState(decks))
   }
 
   render() {
     return (
       <View style={{flex: 1}}>
         <CustomStatusBar backgroundColor={purple} barStyle='dark-content' />
-        <Tabs screenProps={{ decks: this.state, updateDecks: this.updateDecks, onTabChange: this.onTabChange } } />
+        <StackNav screenProps={{ decks: this.state, updateDecks: this.updateDecks, onTabChange: this.onTabChange } } />
       </View>
     )
   }

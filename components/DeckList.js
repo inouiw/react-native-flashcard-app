@@ -7,25 +7,22 @@ export default class DeckList extends Component {
     title: 'Home',
   }
 
-  onDeckItemPress = (deckTitle, numberOfCards) => {
-    this.props.navigation.navigate(
-      'DeckItem',
-      { 
-        deckTitle: deckTitle,
-      }
-    )
+  onDeckItemPress = (deckTitle) => {
+    this.props.navigation.navigate('DeckItem', { deckTitle: deckTitle })
   }
 
   componentDidMount() {
-    // If the user is on the Add Deck Tab and clicks on the Home Tab, 
-    // then show the Home view rathar then the view on top of the stack.
-    this.props.screenProps.tabNavigation.addListener('didFocus', (e) => {
-      this.props.navigation.popToTop()
+    this.props.navigation.addListener('didFocus', (ev) => {
+      if (ev.action.key !== 'StackRouterRoot' && this.props.navigation.state.params) {
+        // Add Deck Button was clicked. Route to deck.
+        this.props.navigation.navigate('DeckItem', { deckTitle: this.props.navigation.state.params.deckTitle })
+      }
     })
   }
 
   render() {
     const {decks} = this.props.screenProps
+
     return (
       <ScrollView style={{flex: 1}}>
         {Object.keys(decks).map((deckTitle) => {
