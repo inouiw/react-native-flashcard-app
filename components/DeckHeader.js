@@ -7,7 +7,6 @@ export default function DeckHeader({deckTitle, numberOfCards}) {
     <View>
       <Text style={styles.deckTitle}>{deckTitle}</Text>
       <Text style={styles.numberOfCards}>{numberOfCards} cards</Text>
-      <View style={styles.horizontalLine} />
     </View>
   )
 }
@@ -24,9 +23,4 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: lightGray,
   },
-  horizontalLine: {
-    borderBottomColor: 'black',
-    borderBottomWidth: 2,
-    margin: 10,
-  }
 })

@@ -1,18 +1,24 @@
 import React, { Component } from 'react'
 import { Text, View, ScrollView, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import { black, white } from '../utils/colors'
-import { saveDeckTitle } from '../utils/dataAccess'
+import { addCardToDeck } from '../utils/dataAccess'
 
-export default class AddDeck extends Component {
+export default class AddCard extends Component {
+  static navigationOptions = {
+    title: 'Add Card',
+  }
+
   state = {
-    text: '',
+    question: '',
+    answer: '',
   }
 
   submit = () => {
-    if (this.state.text) {
-      saveDeckTitle(this.state.text)
+    if (this.state.question && this.state.answer) {
+      const { deckTitle } = this.props.navigation.state.params
+      addCardToDeck(deckTitle, { question: this.state.question, answer: this.state.answer })
         .then(() => this.props.screenProps.updateDecks())
-      this.setState({text: ''})
+      this.setState({question: '', answer: ''})
     }
   }
 
@@ -20,13 +26,20 @@ export default class AddDeck extends Component {
     return (
       <ScrollView contentContainerStyle={{flexGrow: 1}}
         keyboardShouldPersistTaps='handled'>
-        <Text style={styles.questionLabel}>What is the title of your new deck?</Text>
         <KeyboardAvoidingView behavior="padding" enabled>
           <TextInput
-            style={styles.questionInput}
-            onChangeText={(text) => this.setState({text})}
-            value={this.state.text}
+            style={styles.textInput}
+            onChangeText={(question) => this.setState({question})}
+            value={this.state.question}
             maxLength={30}
+            placeholder='Insert question here'
+          />
+          <TextInput
+            style={styles.textInput}
+            onChangeText={(answer) => this.setState({answer})}
+            value={this.state.answer}
+            maxLength={30}
+            placeholder='Insert answer here'
           />
         </KeyboardAvoidingView>
         <TouchableOpacity onPress={this.submit}>
@@ -43,7 +56,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 60,
   },
-  questionInput: {
+  textInput: {
     textAlign: 'left',
     fontSize: 20,
     borderColor: 'gray', 
