@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Text, View, ScrollView, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
-import { black, white } from '../utils/colors'
+import { Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { black, white, gray } from '../utils/colors'
 import { saveDeckTitle } from '../utils/dataAccess'
 
 export default class AddDeck extends Component {
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   questionInput: {
     textAlign: 'left',
     fontSize: 20,
-    borderColor: 'gray', 
+    borderColor: gray, 
     borderWidth: 1,
     padding: 10,
     borderRadius: 7,
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 20,
     marginRight: 20,
-    borderColor: 'black', 
+    borderColor: black, 
     borderWidth: 1,
   }
 })

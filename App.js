@@ -1,13 +1,13 @@
 import React from 'react'
-import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native'
+import { View, StatusBar, Platform } from 'react-native'
 import { TabNavigator, StackNavigator } from 'react-navigation'
-import { Constants } from 'expo'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
-import { purple, white, black } from './utils/colors'
+import { purple, white } from './utils/colors'
 import DeckList from './components/DeckList'
 import AddDeck from './components/AddDeck'
 import DeckItem from './components/DeckItem'
 import AddCard from './components/AddCard'
+import Quiz from './components/Quiz'
 import { getDecks } from './utils/dataAccess'
 
 const StackNav = StackNavigator({
@@ -20,15 +20,22 @@ const StackNav = StackNavigator({
   AddCard: {
     screen: AddCard,
   },
+  Quiz: {
+    screen: Quiz,
+  },
 },{
-  //headerTitle: 'Home',
-  //headerMode: 'none',
-  //cardStyle: { backgroundColor: 'transparent'}
+  initialRouteName: 'DeckList',
 })
+
+// A StackNavigator with access to navigation prop of TabNavigator.
+function StackNavEx(props) {
+  let sp = { ...props.screenProps, tabNavigation: props.navigation }
+  return <StackNav screenProps={sp} />
+}
 
 const Tabs = TabNavigator({
   History: {
-    screen: StackNav,
+    screen: StackNavEx,
     navigationOptions: {
       tabBarLabel: 'Home',
       tabBarIcon: () => <Ionicons name='ios-home' size={30} />
@@ -42,9 +49,6 @@ const Tabs = TabNavigator({
     }
   },
 }, {
-  navigationOptions: {
-    //header: null
-  },
   tabBarOptions: {
     activeTintColor: Platform.OS === 'ios' ? purple : white,
     style: {
@@ -59,7 +63,6 @@ const Tabs = TabNavigator({
       shadowOpacity: 1,
     }
   },
-  lazy: false
 })
 
 function CustomStatusBar({ backgroundColor, ...props }) {
@@ -72,20 +75,20 @@ function CustomStatusBar({ backgroundColor, ...props }) {
 
 export default class App extends React.Component {
   state = {}
-  
+
+  componentDidMount() {
+    this.updateDecks()
+  }
+
   updateDecks = () => {
-    getDecks()
-      .then((decks) => {
-        console.log('app: ', decks)
-        this.setState(decks)
-      })
+    getDecks().then((decks) => this.setState(decks))
   }
 
   render() {
     return (
       <View style={{flex: 1}}>
         <CustomStatusBar backgroundColor={purple} barStyle='dark-content' />
-        <Tabs screenProps={{ decks: this.state, updateDecks: this.updateDecks } } />
+        <Tabs screenProps={{ decks: this.state, updateDecks: this.updateDecks, onTabChange: this.onTabChange } } />
       </View>
     )
   }

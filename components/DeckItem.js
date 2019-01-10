@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, View, TouchableOpacity } from 'react-native'
-import { lightGray, white, black } from '../utils/colors'
+import { white, black } from '../utils/colors'
 import DeckHeader from './DeckHeader'
 
 export default class DeckItem extends Component {
   static navigationOptions = {
-    title: 'Deck Item',
+    title: 'Deck',
+  }
+
+  componentDidMount() {
+    this.props.navigation.addListener('didFocus', () => console.log('deckitem focus'))
   }
 
   onAddCardPressed = () => {
@@ -17,8 +21,19 @@ export default class DeckItem extends Component {
     )
   }
 
+  onStartQuizPressed = () => {
+    this.props.navigation.navigate(
+      'Quiz',
+      { 
+        deckTitle: this.props.navigation.state.params.deckTitle,
+      }
+    )
+  }
+
   render() {
-    const { deckTitle, numberOfCards } = this.props.navigation.state.params
+    const {deckTitle} = this.props.navigation.state.params
+    const {decks} = this.props.screenProps
+    const numberOfCards = decks[deckTitle].questions.length
 
     return (
       <View>
@@ -27,7 +42,7 @@ export default class DeckItem extends Component {
         <TouchableOpacity onPress={this.onAddCardPressed}>
           <Text style={styles.button}>Add Card</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.submit}>
+        <TouchableOpacity onPress={this.onStartQuizPressed}>
           <Text style={styles.button}>Start Quiz</Text>
         </TouchableOpacity>
       </View>
@@ -48,7 +63,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 20,
     marginRight: 20,
-    borderColor: 'black', 
+    borderColor: black, 
     borderWidth: 1,
   }
 })

@@ -1,6 +1,6 @@
 import React from 'react'
-import { Text, StyleSheet, View, TouchableOpacity } from 'react-native'
-import { lightGray } from '../utils/colors'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { black } from '../utils/colors'
 import DeckHeader from './DeckHeader'
 
 export default function DeckHeaderButton({deckTitle, numberOfCards, onPress}) {
@@ -14,7 +14,7 @@ export default function DeckHeaderButton({deckTitle, numberOfCards, onPress}) {
 
 const styles = StyleSheet.create({
   horizontalLine: {
-    borderBottomColor: 'black',
+    borderBottomColor: black,
     borderBottomWidth: 2,
     margin: 10,
   }
