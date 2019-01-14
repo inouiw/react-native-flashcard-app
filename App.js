@@ -8,7 +8,8 @@ import AddDeck from './components/AddDeck'
 import DeckItem from './components/DeckItem'
 import AddCard from './components/AddCard'
 import Quiz from './components/Quiz'
-import { getDecks } from './utils/dataAccess'
+import { getDecks, saveDeckWithCards } from './utils/dataAccess'
+import { baumlisteData } from './utils/initialData'
 
 const Tabs = TabNavigator({
   History: {
@@ -77,7 +78,14 @@ export default class App extends React.Component {
   state = {}
 
   componentDidMount() {
-    this.updateDecks()
+    // Run Promises in Serial.
+    let combinedPromise = Object.keys(baumlisteData).reduce((promiseChain, currentTitle) => {
+      return promiseChain.then(() => 
+        saveDeckWithCards(currentTitle, baumlisteData[currentTitle].questions)
+      )
+    }, Promise.resolve())
+
+    combinedPromise.then(this.updateDecks)
   }
 
   updateDecks = () => {

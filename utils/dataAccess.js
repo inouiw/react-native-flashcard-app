@@ -36,6 +36,21 @@ export function addCardToDeck(title, card) {
     })
 }
 
+// Save a whole deck with cards.
+// questions expects an array of { question: '<question>', answer: 'answer' } objects.
+export function saveDeckWithCards(title, questions) {
+  return AsyncStorage.getItem(FLASHCARD_STORAGE_KEY)
+    .then((item) => {
+      const obj = { 
+        [title]: {
+          title: title,
+          questions: questions,
+        },
+      }
+      return AsyncStorage.mergeItem(FLASHCARD_STORAGE_KEY, JSON.stringify(obj))
+    })
+}
+
 export function removeUserNotificationPreference() {
   return AsyncStorage.removeItem(NOTIFICATION_KEY)
 }

@@ -13,9 +13,11 @@ export default class DeckList extends Component {
 
   componentDidMount() {
     this.props.navigation.addListener('didFocus', (ev) => {
-      if (ev.action.key !== 'StackRouterRoot' && this.props.navigation.state.params) {
+      if (this.props.navigation.state.params && this.props.navigation.state.params.deckTitle) {
+        const deckTitle = this.props.navigation.state.params.deckTitle 
+        this.props.navigation.state.params.deckTitle = undefined
         // Add Deck Button was clicked. Route to deck.
-        this.props.navigation.navigate('DeckItem', { deckTitle: this.props.navigation.state.params.deckTitle })
+        this.props.navigation.navigate('DeckItem', { deckTitle: deckTitle })
       }
     })
   }
