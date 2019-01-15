@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "react-native-flashcard-app",
-    "description": "This project is really great.",
+    "description": "An app to learn flashcards.",
     "slug": "react-native-flashcard-app",
     "privacy": "public",
     "sdkVersion": "31.0.0",
@@ -14,6 +14,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "notification": {
+      "icon": "./assets/icon.png"
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -21,7 +24,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "flashcards.davidneuy"
+    },
+    "android": {
+      "package": "flashcards.davidneuy"
     }
   }
 }

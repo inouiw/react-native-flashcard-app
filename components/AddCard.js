@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import { black, white, gray } from '../utils/colors'
 import { addCardToDeck } from '../utils/dataAccess'
+import Toast from 'react-native-root-toast'
 
 export default class AddCard extends Component {
   static navigationOptions = {
@@ -11,13 +12,22 @@ export default class AddCard extends Component {
   state = {
     question: '',
     answer: '',
+    toastVisible: false,
+  }
+
+  showToast = () => {
+    this.setState({toastVisible: true})
+    setTimeout(() => this.setState({toastVisible: false}), 2000)
   }
 
   submit = () => {
     if (this.state.question && this.state.answer) {
       const { deckTitle } = this.props.navigation.state.params
       addCardToDeck(deckTitle, { question: this.state.question, answer: this.state.answer })
-        .then(() => this.props.screenProps.updateDecks())
+        .then(() => {
+          this.showToast()
+          this.props.screenProps.updateDecks()
+        })
       this.setState({question: '', answer: ''})
     }
   }
@@ -41,6 +51,13 @@ export default class AddCard extends Component {
             maxLength={30}
             placeholder='Insert answer here'
           />
+          <Toast
+            visible={this.state.toastVisible}
+            position={50}
+            shadow={false}
+            animation={true}
+            hideOnPress={true}
+          >Card added</Toast>
         </KeyboardAvoidingView>
         <TouchableOpacity onPress={this.submit}>
           <Text style={styles.button}>Submit</Text>
