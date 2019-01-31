@@ -12,12 +12,6 @@ export default class AddCard extends Component {
   state = {
     question: '',
     answer: '',
-    toastVisible: false,
-  }
-
-  showToast = () => {
-    this.setState({toastVisible: true})
-    setTimeout(() => this.setState({toastVisible: false}), 2000)
   }
 
   submit = () => {
@@ -25,11 +19,21 @@ export default class AddCard extends Component {
       const { deckTitle } = this.props.navigation.state.params
       addCardToDeck(deckTitle, { question: this.state.question, answer: this.state.answer })
         .then(() => {
-          this.showToast()
+          Toast.show('Card added', {
+            position: 30,
+          })
           this.props.screenProps.updateDecks()
         })
       this.setState({question: '', answer: ''})
     }
+  }
+
+  handleQuestionChange({question}) {
+    this.setState({question});
+  }
+
+  handleAnswerChange({answer}) {
+    this.setState({answer});
   }
 
   render() {
@@ -39,25 +43,18 @@ export default class AddCard extends Component {
         <KeyboardAvoidingView behavior="padding" enabled>
           <TextInput
             style={styles.textInput}
-            onChangeText={(question) => this.setState({question})}
+            onChangeText={(question) => this.handleQuestionChange({question})}
             value={this.state.question}
             maxLength={30}
             placeholder='Insert question here'
           />
           <TextInput
             style={styles.textInput}
-            onChangeText={(answer) => this.setState({answer})}
+            onChangeText={(answer) => this.handleAnswerChange({answer})}
             value={this.state.answer}
-            maxLength={30}
+            maxLength={Toast.positions.TOP}
             placeholder='Insert answer here'
           />
-          <Toast
-            visible={this.state.toastVisible}
-            position={50}
-            shadow={false}
-            animation={true}
-            hideOnPress={true}
-          >Card added</Toast>
         </KeyboardAvoidingView>
         <TouchableOpacity onPress={this.submit}>
           <Text style={styles.button}>Submit</Text>

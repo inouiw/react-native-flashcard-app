@@ -72,10 +72,10 @@ export default class Quiz extends Component {
         </TouchableOpacity>
         <View style={{marginTop: 40}} />
         <TouchableOpacity disabled={!showAnswer} onPress={() => this.onQuestionAnswerd(true)}>
-          <Text style={[styles.button, {backgroundColor: showAnswer ? black : lightGray}]}>Correct</Text>
+          <Text style={showAnswer ? styles.button : styles.buttonDisabled}>Correct</Text>
         </TouchableOpacity>
         <TouchableOpacity disabled={!showAnswer} onPress={() => this.onQuestionAnswerd(false)}>
-          <Text style={[styles.button, {backgroundColor: showAnswer ? black : lightGray}]}>Incorrect</Text>
+          <Text style={showAnswer ? styles.button : styles.buttonDisabled}>Incorrect</Text>
         </TouchableOpacity>
       </View>
       )
@@ -83,7 +83,7 @@ export default class Quiz extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styleObj = {
   redLinkbbtton: {
     textAlign: 'center',
     color: red,
@@ -113,4 +113,11 @@ const styles = StyleSheet.create({
     margin: 10,
     fontSize: 25,
   }
-})
+}
+
+styleObj.buttonDisabled = {
+  ...styleObj.button,
+  backgroundColor: lightGray
+}
+
+const styles = StyleSheet.create(styleObj)

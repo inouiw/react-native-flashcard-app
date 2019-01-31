@@ -6,7 +6,7 @@ export default function DeckHeader({deckTitle, numberOfCards}) {
   return (
     <View>
       <Text style={styles.deckTitle}>{deckTitle}</Text>
-      <Text style={styles.numberOfCards}>{numberOfCards} cards</Text>
+      <Text style={styles.numberOfCards}>{numberOfCards} {numberOfCards === 1 ? 'card' : 'cards'}</Text>
     </View>
   )
 }
